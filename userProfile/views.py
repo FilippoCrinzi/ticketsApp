@@ -5,9 +5,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from rest_framework.authtoken.models import Token
 from django.urls import reverse_lazy
 from django.views import View
 from .forms import UserRegistrationForm, UserLoginForm, UserProfileForm
+from events.models import Event
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -36,6 +38,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            Token.objects.create(user=user)
             return redirect('home')
         return render(request, self.template_name, {'form': form})
 

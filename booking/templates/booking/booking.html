@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenotazione</title>
+    <script>
+        const availableSeats = {{ event.available_seats }};
+        function updateTotal() {
+            const ticketPrice = {{ event.price }};
+            const numTickets = document.getElementById('id_num_tickets').value;
+            const totalPrice = ticketPrice * numTickets;
+            document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
+
+        if (numTickets > availableSeats) {
+                document.getElementById('error-message').innerText = 'Non ci sono abbastanza posti disponibili.';
+                document.getElementById('submit-btn').disabled = true;
+            } else {
+                document.getElementById('error-message').innerText = '';
+                document.getElementById('submit-btn').disabled = false;
+            }
+        }
+        document.getElementById('id_num_tickets').addEventListener('input', updateTotal);
+    </script>
+</head>
+<body>
+    <h1>Prenotazione per {{ event.title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p id="error-message" style="color: red;"></p>
+        <button type="submit">Prenota</button>
+    </form>
+    <p>Prezzo del biglietto: {{ event.price }}</p>
+    <p>Biglietti disponibili: {{ event.available_seats }}</p>
+    <p>Totale da pagare: €<span id="totalPrice">0.00</span></p>
+    <script>
+        document.getElementById('id_num_tickets').addEventListener('input', updateTotal);
+    </script>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

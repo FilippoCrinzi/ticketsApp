@@ -2,9 +2,56 @@
 <html>
 <head>
     <title>Home</title>
+    <style>
+        .event-title {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .event_container{
+            border-top: 1px solid lightgray;
+            margin-left: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .prenota-button {
+            background-color: #ffc54d;
+            color: blue; 
+            border: none; 
+            padding: 10px 10px; 
+            cursor: pointer; 
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+.prenota-button:hover {
+    background-color: goldenrod; /* cambia il colore di sfondo quando si passa sopra */
+}
+    </style>
 </head>
 <body>
     <h1>Welcome to the Ticket Reservation System</h1>
+    <form method="GET" action="{% url 'home' %}">
+        <input type="text" name="search" placeholder="Cerca eventi...">
+        <button type="submit">Cerca</button>
+    </form>
+    <h2>Eventi Disponibili</h2>
+    <ul>
+        {% for event in events %}
+            <li class="event_container">
+                <h3 class="event-title">{{ event.title }}</h3>
+                <p>{{ event.description }}</p>
+                <p>Data & Ora: {{ event.date }}</p>
+                <p><img> posti  {{ event.available_seats }}</p>
+                <button class="prenota-button" onclick="location.href='{% url 'booking' event.id %}'">prenota</button>
+            </li>
+            {% empty %}
+            <h4>Nessun evento che corrisponde alla tua ricerca.</h4>
+        {% endfor %}
+        {% if query %}
+            <button onclick="location.href='{% url 'home' %}'">Back to All Events</button>
+        {% endif %}
+    </ul>
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}!</p>
         <a href="{% url 'profile' %}">Profile</a> |
