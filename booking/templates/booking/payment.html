@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Payment</h1>
+    <p>Total: €{{ total_price }}</p>
+    <form id="payment-form">
+        <div id="card-element"></div>
+        <button id="submit-button">Pay</button>
+        <p id="payment-error" style="color: red;"></p>
+    </form>
+    <script>
+        var stripe = Stripe('{{ stripe_publishable_key }}');
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.confirmCardPayment('{{ client_secret }}', {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: 'Jenny Rosen'
+                    }
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    // Show error to your customer (e.g., insufficient funds)
+                    var errorElement = document.getElementById('payment-error');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // The payment has been processed!
+                    if (result.paymentIntent.status === 'succeeded') {
+                        // Show a success message to your customer
+                    window.location.href = "/booking/success/{{ booking_id }}/";
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

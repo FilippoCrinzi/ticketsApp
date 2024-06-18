@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
-
+u
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,25 +27,19 @@
     </script>
 </head>
 <body>
-    <h1>Prenotazione per {{ event.title }}</h1>
+    <h1>Reservation for {{ event.title }}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <p id="error-message" style="color: red;"></p>
-        <button type="submit">Prenota</button>
+        <button id="submit-btn" type="submit">checkout</button>
     </form>
-    <p>Prezzo del biglietto: {{ event.price }}</p>
-    <p>Biglietti disponibili: {{ event.available_seats }}</p>
-    <p>Totale da pagare: €<span id="totalPrice">0.00</span></p>
+    <p>Ticket price: {{ event.price }}</p>
+    <p>Tickets available: {{ event.available_seats }}</p>
+    <p>Total: €<span id="totalPrice">0.00</span></p>
     <script>
         document.getElementById('id_num_tickets').addEventListener('input', updateTotal);
     </script>
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
 </body>
 </html>
+

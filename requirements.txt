@@ -1,3 +1,4 @@
 djangorestframework==latest
 Django~=5.0.6
 django-filter==24.2
+stripe==9.11.0
