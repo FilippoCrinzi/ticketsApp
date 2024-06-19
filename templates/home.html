@@ -103,6 +103,21 @@
         .user-info a:hover {
             text-decoration: underline;
         }
+        .back-button {
+            background-color: #0044cc;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+            border: none;
+            font-size: 1em;
+        }
+        .back-button:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -126,7 +141,7 @@
             <h4>Nessun evento che corrisponde alla tua ricerca.</h4>
         {% endfor %}
         {% if query %}
-            <button onclick="location.href='{% url 'home' %}'">Back to All Events</button>
+            <button class="back-button" onclick="location.href='{% url 'home' %}'">Back to All Events</button>
         {% endif %}
     </ul>
     <div class="user-info">

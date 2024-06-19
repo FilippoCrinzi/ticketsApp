@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prenotazione</title>
     <style>
+        button[type="submit"]:disabled {
+        background-color: #cccccc;
+        color: #666666;
+    }
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f0f4f8;
@@ -92,11 +96,11 @@
                 totalPriceElement.innerText = totalPrice.toFixed(2);
 
                 if (numTickets > availableSeats) {
-                    errorMessageElement.innerText = 'Non ci sono abbastanza posti disponibili.';
-                    submitButton.disabled = true;
+                    document.getElementById('error-message').innerText = 'Non ci sono abbastanza posti disponibili.';
+                    document.getElementById('submit-btn').disabled = true;
                 } else {
-                    errorMessageElement.innerText = '';
-                    submitButton.disabled = false;
+                    document.getElementById('error-message').innerText = '';
+                    document.getElementById('submit-btn').disabled = false;
                 }
             }
 

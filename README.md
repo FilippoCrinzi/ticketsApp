@@ -1,4 +1,5 @@
 # Ticket Reservation System
+### Link al sito web: [Ticket Reservation System](https://ticketsapp-production.up.railway.app)
 
 ## Descrizione del Progetto
 Ticket Reservation System è un'applicazione web per la prenotazione di biglietti per eventi. Gli utenti possono visualizzare gli eventi disponibili, cercarli per nome o parola chiave della descrizione, e prenotare i biglietti dopo essersi autenticati. Il pagamento dei biglietti viene gestito tramite Stripe.
@@ -100,5 +101,6 @@ Il pagamento viene gestito utilizzando Stripe. Quando un utente effettua una pre
 
 - **Endpoint per gestire il pagamento**:
     - `POST /payment/`: Elabora il pagamento tramite Stripe e aggiorna lo stato della prenotazione a "confermato" se il pagamento ha successo.
+
 
 
