@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-k)gx1x0h9%z#4s(g%pywtf9gx%h8s(5gkn=qwk=v2rj7o_unz_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'ticketsApp.urls'
@@ -142,3 +143,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 LOGIN_URL = 'login'
 STRIPE_SECRET_KEY = 'sk_test_51PSgFKGFXU4fFGZ4p8jr9aHimZxq07fjT2oBHiaanJSZV8i1UReexIFJhHGgSxfPIirIzUWV46jtphWHlw1x9yqe00RJJfVHc4'
 STRIPE_PUBLIC_KEY = 'pk_test_51PSgFKGFXU4fFGZ461y3aQ9yUBLZs5bH7AEpAOUNNGwa021thJv5yzqOHPew7FoDwzzXyKtAAoqWIQCVQXFbkUFP00CUa96Lsb'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')

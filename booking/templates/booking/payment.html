@@ -5,14 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment</title>
     <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #0044cc;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        #payment-form {
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #card-element {
+            margin-bottom: 1em;
+        }
+
+        #submit-button {
+            background-color: #ffc107;
+            color: #0044cc;
+            border: none;
+            padding: 1em;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #submit-button:hover {
+            background-color: #e0a800;
+        }
+
+        #payment-error {
+            color: red;
+            margin-top: 1em;
+            display: none; /* Inizialmente nascosto */
+        }
+    </style>
 </head>
 <body>
-    <h1>Payment</h1>
-    <p>Total: €{{ total_price }}</p>
     <form id="payment-form">
+        <h1>Payment</h1>
+        <p>Total: €{{ total_price }}</p>
         <div id="card-element"></div>
         <button id="submit-button">Pay</button>
-        <p id="payment-error" style="color: red;"></p>
+        <p id="payment-error"></p>
     </form>
     <script>
         var stripe = Stripe('{{ stripe_publishable_key }}');
@@ -21,6 +75,8 @@
         card.mount('#card-element');
 
         var form = document.getElementById('payment-form');
+        var errorElement = document.getElementById('payment-error'); // Riferimento all'elemento di errore
+
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -33,14 +89,14 @@
                 }
             }).then(function(result) {
                 if (result.error) {
-                    // Show error to your customer (e.g., insufficient funds)
-                    var errorElement = document.getElementById('payment-error');
+                    // Mostra l'errore
+                    errorElement.style.display = 'block';
                     errorElement.textContent = result.error.message;
                 } else {
-                    // The payment has been processed!
+                    // Il pagamento è stato processato con successo
                     if (result.paymentIntent.status === 'succeeded') {
-                        // Show a success message to your customer
-                    window.location.href = "/booking/success/{{ booking_id }}/";
+                        // Mostra un messaggio di successo e reindirizza
+                        window.location.href = "/booking/success/{{ booking_id }}/";
                     }
                 }
             });

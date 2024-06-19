@@ -1,45 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-u
-    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prenotazione</title>
-    <script>
-        const availableSeats = {{ event.available_seats }};
-        function updateTotal() {
-            const ticketPrice = {{ event.price }};
-            const numTickets = document.getElementById('id_num_tickets').value;
-            const totalPrice = ticketPrice * numTickets;
-            document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
-
-        if (numTickets > availableSeats) {
-                document.getElementById('error-message').innerText = 'Non ci sono abbastanza posti disponibili.';
-                document.getElementById('submit-btn').disabled = true;
-            } else {
-                document.getElementById('error-message').innerText = '';
-                document.getElementById('submit-btn').disabled = false;
-            }
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        document.getElementById('id_num_tickets').addEventListener('input', updateTotal);
+
+        .container {
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #0044cc;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="number"], select, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: #ffc107;
+            color: #0044cc;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #e0a800;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .total {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const availableSeats = {{ event.available_seats }};
+            const ticketPrice = {{ event.price }};
+            const numTicketsInput = document.getElementById('id_num_tickets');
+            const totalPriceElement = document.getElementById('totalPrice');
+            const errorMessageElement = document.getElementById('error-message');
+            const submitButton = document.getElementById('submit-btn');
+
+            function updateTotal() {
+                const numTickets = numTicketsInput.value;
+                const totalPrice = ticketPrice * numTickets;
+                totalPriceElement.innerText = totalPrice.toFixed(2);
+
+                if (numTickets > availableSeats) {
+                    errorMessageElement.innerText = 'Non ci sono abbastanza posti disponibili.';
+                    submitButton.disabled = true;
+                } else {
+                    errorMessageElement.innerText = '';
+                    submitButton.disabled = false;
+                }
+            }
+
+            numTicketsInput.addEventListener('input', updateTotal);
+            updateTotal();
+        });
     </script>
 </head>
 <body>
-    <h1>Reservation for {{ event.title }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <p id="error-message" style="color: red;"></p>
-        <button id="submit-btn" type="submit">checkout</button>
-    </form>
-    <p>Ticket price: {{ event.price }}</p>
-    <p>Tickets available: {{ event.available_seats }}</p>
-    <p>Total: €<span id="totalPrice">0.00</span></p>
-    <script>
-        document.getElementById('id_num_tickets').addEventListener('input', updateTotal);
-    </script>
+    <div class="container">
+        <h1>Reservation for {{ event.title }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p id="error-message" class="error-message"></p>
+            <button id="submit-btn" type="submit">Checkout</button>
+        </form>
+        <p>Ticket price: €{{ event.price }}</p>
+        <p>Tickets available: {{ event.available_seats }}</p>
+        <p class="total">Total: €<span id="totalPrice">0.00</span></p>
+    </div>
 </body>
 </html>
-

@@ -1,39 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #0044cc;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        button[type="submit"] {
+            background-color: #ffc107;
+            color: #0044cc;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #e0a800;
+        }
+
         .event-title {
             text-transform: uppercase;
             font-weight: bold;
-        }
-        .event_container{
-            border-top: 1px solid lightgray;
-            margin-left: 0;
-            display: flex;
-            justify-content: space-between;
-        }
-        .prenota-button {
-            text-weight: bold;
-            text-transform: uppercase;
-            background-color: #ffc54d;
-            color: blue; 
-            border: none; 
-            padding: 10px 10px; 
-            cursor: pointer; 
-            border-radius: 5px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-        .dati{
-            margin-left: 8px;
-            text-align:center;
-            margin-right: 3px;
+            color: #0044cc;
         }
 
-.prenota-button:hover {
-    background-color: goldenrod; /* cambia il colore di sfondo quando si passa sopra */
-}
+        .event_container {
+            border-top: 1px solid lightgray;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dati {
+            margin-left: 8px;
+            text-align: center;
+            margin-right: 3px;
+            flex: 1;
+        }
+
+        .prenota-button {
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #ffc107;
+            color: #0044cc;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .prenota-button:hover {
+            background-color: #e0a800;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .user-info a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #0044cc;
+        }
+
+        .user-info a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -42,8 +111,8 @@
         <input type="text" name="search" placeholder="Search event...">
         <button type="submit">Search</button>
     </form>
-    <h2 class="dati">Available events</h2>
-    <ul style="padding: 0">
+    <h2 class="dati">Available Events</h2>
+    <ul>
         {% for event in events %}
             <li class="event_container">
                 <h3 class="event-title">{{ event.title }}</h3>
@@ -51,22 +120,24 @@
                 <p class="dati">{{ event.date }}</p>
                 <p class="dati">{{ event.location }}</p>
                 <p class="dati">{{ event.price }}$</p>
-                <button class="prenota-button" onclick="location.href='{% url 'booking' event.id %}'">book</button>
+                <button class="prenota-button" onclick="location.href='{% url 'booking' event.id %}'">Book</button>
             </li>
-            {% empty %}
+        {% empty %}
             <h4>Nessun evento che corrisponde alla tua ricerca.</h4>
         {% endfor %}
         {% if query %}
             <button onclick="location.href='{% url 'home' %}'">Back to All Events</button>
         {% endif %}
     </ul>
-    {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}!</p>
-        <a href="{% url 'profile' %}">Profile</a> |
-        <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a> |
-        <a href="{% url 'register' %}">Register</a>
-    {% endif %}
+    <div class="user-info">
+        {% if user.is_authenticated %}
+            <p>Hello, {{ user.username }}!</p>
+            <a href="{% url 'profile' %}">Profile</a> |
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a> |
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
 </body>
 </html>
